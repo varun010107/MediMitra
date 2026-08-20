@@ -1,0 +1,3 @@
+model,accuracy,weighted_precision,weighted_recall,weighted_f1,macro_f1,top_3_accuracy,top_5_accuracy
+Logistic Regression,1.0,1.0,1.0,1.0,1.0,1.0,1.0
+Random Forest,1.0,1.0,1.0,1.0,1.0,1.0,1.0
