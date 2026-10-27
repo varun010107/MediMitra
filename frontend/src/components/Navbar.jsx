@@ -10,7 +10,7 @@ export default function Navbar() {
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/services', label: 'Services' },
-    { to: '/ai-diagnosis', label: 'AI Diagnosis' },
+    { to: '/ai-diagnosis', label: 'AI Screening' },
     { to: '/contact', label: 'Contact' },
   ];
 

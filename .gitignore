@@ -7,3 +7,5 @@ venv/
 backend/.matplotlib/
 frontend/dist/
 .claude/
+node_modules/
+tmp/

@@ -63,8 +63,8 @@ export default function About() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
             {[
               { icon: Heart, title: 'Compassion', desc: 'Treating every patient with empathy and care, ensuring the human element is never lost in technology.', color: '#FEE2E2', iconColor: '#EF4444' },
-              { icon: Shield, title: 'Trust & Privacy', desc: 'Protecting patient data with the highest standards of security and HIPAA compliance.', color: '#DBEAFE', iconColor: '#3B82F6' },
-              { icon: Award, title: 'Excellence', desc: 'Continuously improving our AI models and medical databases for the highest diagnostic accuracy.', color: '#FEF3C7', iconColor: '#D97706' },
+              { icon: Shield, title: 'Trust & Privacy', desc: 'Being clear about how information is used and the limitations of this educational prototype.', color: '#DBEAFE', iconColor: '#3B82F6' },
+              { icon: Award, title: 'Excellence', desc: 'Improving the clarity of AI questions, explanations, and uncertainty for professional review.', color: '#FEF3C7', iconColor: '#D97706' },
               { icon: Users, title: 'Collaboration', desc: 'Bridging AI intelligence with physician expertise for comprehensive patient care.', color: '#DCFCE7', iconColor: '#16A34A' },
               { icon: CheckCircle, title: 'Transparency', desc: 'Clear communication about AI limitations and always recommending professional verification.', color: '#EDE9FE', iconColor: '#7C3AED' },
               { icon: Target, title: 'Accessibility', desc: 'Making quality healthcare screening available to everyone, everywhere, at any time.', color: C.tealLight, iconColor: C.teal },
@@ -93,7 +93,7 @@ export default function About() {
             <p style={{ color: C.textSec, lineHeight: 1.7, marginBottom: 24 }}>Our platform unites doctors, specialists, and wellness experts in one place. From diagnostics to recovery, we ensure holistic healing and long-term wellness.</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {[
-                'AI-powered preliminary screening with 97% accuracy',
+                'AI screening with personalized questions and clear uncertainty',
                 'Expert physician review and sign-off on every case',
                 'Comprehensive lab report analysis with multimodal OCR',
                 'Emergency triage and instant SOS routing',

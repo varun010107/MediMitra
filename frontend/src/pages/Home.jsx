@@ -67,7 +67,7 @@ export default function Home() {
               </motion.h1>
 
               <motion.p variants={fadeUp} style={{ fontSize: 17, color: 'rgba(255,255,255,0.7)', marginTop: 24, maxWidth: 480, lineHeight: 1.7 }}>
-                AI-powered clinical intelligence that connects doctors and patients effortlessly — providing smarter, safer, and compassionate healthcare from diagnosis to full recovery.
+                Understand your symptoms with personalized AI questions, clear explanations, and a report to discuss with a healthcare professional.
               </motion.p>
 
               <motion.div variants={fadeUp} style={{ display: 'flex', gap: 16, marginTop: 32, flexWrap: 'wrap' }}>
@@ -93,7 +93,7 @@ export default function Home() {
               <motion.div variants={fadeUp} style={{ display: 'flex', gap: 32, marginTop: 48 }}>
                 {[
                   { icon: UserCheck, val: '50+', lbl: 'Specialists' },
-                  { icon: Activity, val: '97%', lbl: 'Accuracy' },
+                  { icon: Activity, val: 'AI', lbl: 'Explained screening' },
                   { icon: Clock, val: '24/7', lbl: 'Support' },
                 ].map(s => (
                   <div key={s.lbl} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -136,8 +136,8 @@ export default function Home() {
                       <HeartPulse size={24} color={C.accentDark} />
                     </div>
                     <div>
-                      <div style={{ fontSize: 28, fontWeight: 800, color: C.primaryDark }}>97%</div>
-                      <div style={{ fontSize: 12, color: C.textMuted }}>Trusted Care Rate</div>
+                      <div style={{ fontSize: 28, fontWeight: 800, color: C.primaryDark }}>AI</div>
+                      <div style={{ fontSize: 12, color: C.textMuted }}>Explained Screening</div>
                     </div>
                   </div>
                 </div>
@@ -163,8 +163,8 @@ export default function Home() {
           {[
             { icon: Users, value: '135K+', label: 'Patients Served' },
             { icon: Stethoscope, value: '50+', label: 'Healthcare Professionals' },
-            { icon: Activity, value: '97%', label: 'Diagnostic Accuracy' },
-            { icon: Shield, value: '100%', label: 'HIPAA Compliant' },
+            { icon: Activity, value: 'AI', label: 'Explained screening' },
+            { icon: Shield, value: 'Clear', label: 'Uncertainty & limitations' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center' }}>
               <s.icon size={24} color={C.primary} style={{ margin: '0 auto 8px' }} />
@@ -191,7 +191,7 @@ export default function Home() {
                 Connecting Doctors & Patients for <span style={{ color: C.primary }}>Holistic Healing</span>
               </motion.h2>
               <motion.p variants={fadeUp} style={{ color: C.textSec, marginTop: 20, lineHeight: 1.7 }}>
-                MediMitra Clinic connects doctors and patients effortlessly, providing smarter, safer, and compassionate healthcare from diagnosis to full recovery. Our AI-powered platform ensures accurate screening while keeping the human touch at the center of care.
+                MediMitra Clinic connects doctors and patients effortlessly, providing smarter, safer, and compassionate healthcare from diagnosis to full recovery. Our AI screening explains possible causes and uncertainty to support a conversation with a healthcare professional.
               </motion.p>
 
               <motion.div variants={fadeUp} style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginTop: 32 }}>
@@ -248,10 +248,10 @@ export default function Home() {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
             {[
-              { icon: Brain, title: 'AI Health Screening', desc: 'Advanced AI-powered symptom analysis with specially curated questionnaires for accurate preliminary diagnosis.', color: '#DBEAFE', iconColor: '#2563EB' },
+              { icon: Brain, title: 'AI Health Screening', desc: 'Personalized questions based on your symptoms and medical history, with clear uncertainty when evidence is limited.', color: '#DBEAFE', iconColor: '#2563EB' },
               { icon: Microscope, title: 'Lab Report Analysis', desc: 'Multimodal AI reads and interprets your lab reports, identifying out-of-range values and clinical implications.', color: '#EDE9FE', iconColor: '#7C3AED' },
               { icon: Stethoscope, title: 'Doctor Consultation', desc: 'Get matched with the right specialist based on your symptoms and AI screening results.', color: C.tealLight, iconColor: C.teal },
-              { icon: FileText, title: 'Clinical Reports', desc: "Downloadable PDF reports with comprehensive diagnostic summaries for your doctor's review.", color: '#FFF7ED', iconColor: '#EA580C' },
+              { icon: FileText, title: 'Clinical Reports', desc: "Downloadable PDF reports explaining possible causes, supporting facts, and what remains uncertain.", color: '#FFF7ED', iconColor: '#EA580C' },
               { icon: Pill, title: 'Precautionary Guidance', desc: 'Evidence-based precautionary measures and lifestyle recommendations tailored to your condition.', color: '#DCFCE7', iconColor: '#16A34A' },
               { icon: Phone, title: 'Emergency Triage', desc: 'Instant identification of critical conditions with emergency routing and SOS capabilities.', color: '#FEE2E2', iconColor: '#DC2626' },
             ].map(s => (
@@ -298,8 +298,8 @@ export default function Home() {
             {[
               { step: '01', title: 'Patient Details', desc: 'Enter your basic information and medical history', icon: Users, gradient: 'linear-gradient(135deg, #3B82F6, #2563EB)' },
               { step: '02', title: 'Symptom Assessment', desc: 'Select symptoms and describe your condition', icon: Stethoscope, gradient: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' },
-              { step: '03', title: 'AI Questionnaire', desc: 'Answer specially curated diagnostic questions', icon: Brain, gradient: `linear-gradient(135deg, ${C.teal}, ${C.primary})` },
-              { step: '04', title: 'Get Results', desc: 'Receive AI-powered diagnosis and recommendations', icon: FileText, gradient: `linear-gradient(135deg, ${C.accentDark}, ${C.accent})` },
+              { step: '03', title: 'AI Questionnaire', desc: 'Answer questions tailored to your symptoms and history', icon: Brain, gradient: `linear-gradient(135deg, ${C.teal}, ${C.primary})` },
+              { step: '04', title: 'Get Results', desc: 'Review possibilities, uncertainty, and next steps', icon: FileText, gradient: `linear-gradient(135deg, ${C.accentDark}, ${C.accent})` },
             ].map((s, i) => (
               <motion.div
                 key={s.step}

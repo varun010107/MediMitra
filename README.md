@@ -1,210 +1,79 @@
-# MediMitra: two-pass disease classification prototype
+# MediMitra: LLM-based health screening
 
-MediMitra is an academic clinical decision-support prototype. It maps free-text complaints to a fixed dataset vocabulary, runs a symptom-only disease classifier, selects follow-up symptoms from training-set statistics, and runs the same classifier again with newly confirmed symptoms.
+MediMitra asks follow-up questions tailored to a patient's details, medical history, symptoms, and optional lab findings. Gemini reviews the complete case and returns either a possible main condition with alternatives, or **Insufficient evidence** when it cannot reasonably distinguish a leading condition.
 
-It does **not** diagnose patients, estimate real-world disease probability, prescribe treatment, or replace a qualified healthcare professional. Displayed probabilities are ML `model_confidence` values for this synthetic/repetitive dataset only.
+This is an educational prototype, not a confirmed diagnosis or validated triage system. AI output can be wrong. It requires review by a qualified healthcare professional.
 
-## Architecture
+## Current flow
 
-```text
-free text / selected symptoms
-        |
-        v
-dataset-constrained symptom mapper
-        |
-        v
-same persisted ML model (Pass 1)
-        |
-        v
-dataset-statistics question selector
-        |
-        v
-checkbox answers: present / absent / unknown / asked
-        |
-        v
-same persisted ML model (Pass 2)
-        |
-        +--> separate unvalidated prototype RiskEngine
-        |
-        +--> optional LLM wording/explanation only
+1. Enter name, age, gender, and relevant history, medicines, or allergies. Names and contact numbers are not sent to Gemini.
+2. Describe symptoms freely. The searchable symptom catalogue is grouped by body area. These optional shortcuts are not a restricted vocabulary or a set of conditions with proven prediction accuracy. Optionally upload a PDF/image lab report, then review and correct the extracted text.
+3. Gemini chooses a batch of 6–12 distinct follow-up questions from that initial case. Each question explains why it matters and includes unknown/none choices. These questions are personalized to the intake; they are not regenerated after each answer. An additional free-text field captures details outside the choices.
+4. Gemini assesses all initial information and answers together. The result shows a main possibility and alternatives only when there is reasonable supporting evidence. Low certainty can accompany tentative, evidence-linked possibilities. The app suppresses condition labels only when the LLM explicitly finds insufficient evidence for a useful leading explanation. Missing tests alone do not require abstention. Urgency remains separate from diagnostic certainty.
+5. Download the same assessment as a PDF, with supporting reported facts, explanations in simple language, limitations, next steps, and the complete information used.
+
+No persisted disease classifier, symptom encoder, fixed-vocabulary mapping, or dataset risk engine participates in this flow. There are no disease probability percentages. Report explanations are evidence summaries, not access to the model's internal reasoning. Evidence IDs are checked against supplied facts; this does not independently establish the medical correctness of a generated explanation.
+
+## Setup
+
+Python 3.11+ and Node.js compatible with Vite 8 are required.
+
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+# Set GEMINI_API_KEY in .env. GEMINI_MODEL is optional.
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8001 --reload
 ```
 
-The LLM cannot select symptoms, change disease candidates, or change model confidences. Patient profile data and parsed lab reports remain separate and are not classifier features.
+In a second terminal:
 
-## Dataset and preprocessing
-
-The supplied `dataset (Repaired).csv` was copied to `backend/data/disease_dataset.csv`; the original download was not modified. Actual inspection found:
-
-- 4,920 rows and 18 columns
-- target `Disease` plus `Symptom_1` through `Symptom_17`
-- 41 balanced disease labels and 131 normalized symptoms
-- 4,616 duplicated rows and only 304 unique disease-symptom patterns
-- 3 to 17 symptoms per record (mean 7.45)
-
-Symptoms are lowercased and converted to canonical underscore identifiers. A `MultiLabelBinarizer` creates the multi-hot input vector. The model intentionally uses symptoms only; age, gender, profile, lifestyle, medical history, and laboratory data are context fields because they are absent from this dataset.
-
-## Setup and run
-
-From the project directory in PowerShell:
-
-```powershell
-py -3.11 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+```sh
 cd frontend
 npm install
-cd ..
-```
-
-The code also works with a newer compatible Python version; development verification used Python 3.12.
-
-Train or refresh the persisted artifacts (not required on every backend start):
-
-```powershell
-.\.venv\Scripts\python.exe -m backend.train_model
-```
-
-Print three reproducible Pass-1/Pass-2 examples:
-
-```powershell
-.\.venv\Scripts\python.exe -m backend.demo_predictions
-```
-
-Run the reproducible accuracy evaluation without overwriting the saved model:
-
-```powershell
-.\.venv\Scripts\python.exe -m backend.evaluate_accuracy
-```
-
-This command also regenerates the evaluation figures inside `backend/models/evaluation/`: accuracy comparison, masking curve, cross-validation folds, confusion matrix, disease-wise F1, confidence calibration, disease–symptom heatmap, Pass-1 versus Pass-2, and accuracy versus questionnaire count.
-
-The questionnaire figures are an offline cross-validation replay. The evaluator hides 60% of every held-out pattern, offers three training-statistics-driven symptom options per question group, and answers those options from the dataset record. This measures the algorithm under controlled synthetic conditions; it is not a patient study or clinical validation.
-
-Run the API on port 8001:
-
-```powershell
-.\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8001 --reload
-```
-
-In a second PowerShell terminal, run the frontend on port 3000:
-
-```powershell
-cd frontend
 npm run dev
 ```
 
-Open `http://127.0.0.1:3000`. Vite proxies `/api` to the FastAPI server.
+Open http://localhost:3000. Vite proxies `/api` to port 8001.
 
-## Training and evaluation
+On Windows, activate the environment with `.venv\Scripts\Activate.ps1` in PowerShell.
 
-Training uses an 80/20 stratified split with random seed 42. Logistic Regression and Random Forest are compared by weighted F1, macro F1, and top-k accuracy. Logistic Regression was selected deterministically after both models tied on the random split.
+A working Gemini key and available quota are required. Missing configuration, invalid AI output, or provider failure produces a retryable 503 service error, not a fabricated assessment or an “insufficient evidence” medical result. Uploaded lab files are limited to 10 MB and PDF/PNG/JPEG formats. Patient-entered health context and lab attachments are sent to Google's Gemini service; obtain appropriate consent before use. The app has no patient database or authentication and is not ready for real patient deployment.
 
-| Model | Accuracy | Weighted F1 | Macro F1 | Top-3 | Top-5 |
-|---|---:|---:|---:|---:|---:|
-| Logistic Regression | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
-| Random Forest | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+## API
 
-These perfect random-split scores are **not clinical performance**. Repeated rows put identical patterns in training and test partitions. A masking test gives a more useful stress check:
+- `POST /api/generate-questionnaire`: patient name, age, gender, medical history, symptom description, optional selected symptoms and lab report text. Returns structured questions and model identity.
+- `POST /api/analyze`: the same intake, returned questionnaire, a question-ID-to-answer dictionary, and optional `additional_details`. Every question needs an exact listed answer; unknown choices are allowed. Both generation and analysis enforce 6–12 questions. Under-length or invalid generated questionnaires get one bounded regeneration attempt.
+- `POST /api/parse-lab-report`: multipart file. Returns editable AI-extracted findings.
+- `POST /api/generate-pdf`: patient details and the returned `results`. Generates an explainable report without another model call and without leaving patient PDF files on disk.
 
-| Symptoms hidden | Top-1 | Top-3 | Top-5 |
-|---:|---:|---:|---:|
-| 0% | 1.000 | 1.000 | 1.000 |
-| 20% | 0.997 | 1.000 | 1.000 |
-| 40% | 0.978 | 1.000 | 1.000 |
-| 60% | 0.856 | 0.985 | 0.994 |
+The final assessment has `status`, `certainty`, `summary`, nullable `primary_condition`, `other_possibilities`, `uncertainty_explanation`, `missing_information`, `next_steps`, `urgency`, `urgency_reason`, `warning_signs`, and the exact `evidence` items considered. Each condition includes an overview, an explanation, supporting evidence IDs, and uncertainties.
 
-A stricter duplicate-aware evaluation collapses the dataset to its 304 unique disease/symptom patterns. Both its stratified holdout and five-fold cross-validation score 100% on complete symptom lists, demonstrating how deterministic and separable this synthetic dataset is. When symptoms are hidden inside the unique-pattern cross-validation test folds, performance is more realistic:
+## Tests
 
-| Test symptoms hidden | Top-1 | Top-3 | Top-5 |
-|---:|---:|---:|---:|
-| 20% | 1.000 | 1.000 | 1.000 |
-| 40% | 0.977 | 1.000 | 1.000 |
-| 60% | 0.757 | 0.957 | 0.984 |
-| 80% | 0.326 | 0.520 | 0.553 |
-
-Evaluation files are under `backend/models/evaluation/`, including the confusion matrix, disease-wise report, comparison table, masking test, and JSON metrics.
-
-## API flow
-
-### Pass 1 and questionnaire
-
-`POST /api/generate-questionnaire`
-
-```json
-{
-  "patient_name": "Demo Patient",
-  "age": 35,
-  "gender": "female",
-  "medical_history": "",
-  "symptom_description": "high fever, chills and sweating",
-  "selected_symptoms": []
-}
-```
-
-The response includes mapping evidence, sorted Pass-1 candidates, and up to eight dataset-driven checkbox questions. Each question offers canonical symptom options and `None of the above`.
-
-### Pass 2 and analysis
-
-`POST /api/analyze`
-
-```json
-{
-  "patient_name": "Demo Patient",
-  "age": 35,
-  "gender": "female",
-  "medical_history": "",
-  "symptom_description": "high fever, chills and sweating",
-  "selected_symptoms": [],
-  "questionnaire": ["copy the returned structured question objects here"],
-  "questionnaire_answers": {
-    "q_1": ["headache", "nausea"],
-    "q_2": ["none"]
-  },
-  "lab_report_text": ""
-}
-```
-
-Multiple checked symptoms become present. Selecting `none` marks every displayed symptom absent and is mutually exclusive. Unchecked options remain unknown, while all displayed options become asked. Pass 2 unions the original and newly present symptoms and invokes the exact same saved model and encoder.
-
-A request with no recognized symptoms returns HTTP 422 and mapping guidance instead of making a guess.
-
-## Tests and build
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest backend\tests -q
+```sh
+python -m pytest backend/tests -q
 cd frontend
 npm run lint
 npm run build
 ```
 
-Tests cover normalization, synonyms, negation, unknown inputs, model loading, sorted top-k outputs, shared Pass-1/Pass-2 artifacts, question vocabulary/ranking and exclusions, checkbox state semantics, LLM immutability, zero-mapping rejection, and the end-to-end API flow.
+Tests use a mocked Gemini provider to cover the complete intake/question/assessment/report flow, abstention, invalid output, provider unavailability, evidence references, and questionnaire validation. They do not establish clinical accuracy or replace testing with an actual configured Gemini account.
 
-## Important files
+The six-question minimum is a product choice, not a clinically validated accuracy threshold. Question count varies by missing case information rather than randomness. See `docs/PROJECT_ROADMAP.md` for a proposed evaluation dashboard, clinician review workflow, patient timeline, and curated source retrieval.
 
-- `backend/train_model.py` — inspection, model comparison, masking evaluation, and artifact persistence.
-- `backend/demo_predictions.py` — reproducible Pass-1/Pass-2 examples using saved artifacts.
-- `backend/evaluate_accuracy.py` — duplicate-aware holdout, cross-validation, and incomplete-symptom stress testing.
-- `backend/services/symptom_mapper.py` — controlled vocabulary mapping and explicit reviewed aliases.
-- `backend/services/prediction_service.py` — shared Pass-1/Pass-2 model inference.
-- `backend/services/question_selector.py` — candidate-weighted discrimination scoring from training-only statistics.
-- `backend/services/patient_state.py` — present, absent, unknown, and asked state transitions.
-- `backend/services/risk_engine.py` — separate configuration-driven prototype interface.
-- `backend/services/llm_service.py` — optional wording/explanation layer with immutable structured facts.
-- `backend/api/routes.py` — FastAPI schemas and orchestration.
-- `frontend/src/pages/AIDiagnosis.jsx` — two-pass clinical prototype UI.
-- `backend/models/` — persisted model/encoders/metadata; backend startup only loads these files.
+## Code map
 
-## Remaining integration and validation work
+- `backend/main.py`: API startup, Gemini configuration, lab extraction, PDF endpoint.
+- `backend/api/routes.py`: intake validation and questionnaire/assessment orchestration.
+- `backend/services/assessment_service.py`: typed LLM response schemas, prompts, evidence preparation, abstention rules.
+- `backend/services/report_service.py`: paginated PDF rendering of the same explained assessment.
+- `frontend/src/pages/AIDiagnosis.jsx`: intake, questions, assessment, and report download.
+- `frontend/src/context/PatientContext.jsx`: patient state in React memory.
 
-- Replace the current batch follow-up selection with live question-by-question re-ranking if desired.
-- Add clinically reviewed risk rules before any real-world use. Current rules are explicitly unvalidated placeholders.
-- Validate symptom synonyms, negation, demographics, and language handling with clinicians and representative users.
-- Train on a patient-level, independently sourced, clinically governed dataset before interpreting confidence clinically.
-- Connect Gemini only for approved wording and final narrative generation; the deterministic fallback already works without an API key.
-- Connect a validated lab parser and future context/risk models separately; lab/profile fields must not enter this classifier version.
-- Add authentication, consent, audit logging, privacy controls, monitoring, and deployment security before handling real patient information.
+## Retained for future ML work
 
-## Medical disclaimer
+`backend/train_model.py`, `backend/evaluate_accuracy.py`, `backend/demo_predictions.py`, the earlier ML services, `backend/models/`, and datasets are preserved but disconnected from the application. Their older unit tests are under `backend/ml_tests/`; install `backend/requirements-ml.txt` separately to work on those modules. Their saved scores describe a repetitive academic dataset, not clinical performance. Restoring an ML integration requires an explicit new integration and validation effort.
 
-For education and research only. Outputs are model-generated candidate labels, not confirmed diagnoses. Seek a qualified healthcare professional for medical assessment. Urgent or severe symptoms require appropriate emergency services; do not rely on this prototype for triage.
+`opum_max_ui.py` is a legacy standalone Streamlit implementation and is not part of the current React/FastAPI application. Its extra dependencies are not installed by the default requirements.

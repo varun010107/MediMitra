@@ -12,10 +12,10 @@ const C = {
 const fadeUp = { hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } };
 
 const services = [
-  { icon: Brain, title: 'AI Health Screening', gradient: 'linear-gradient(135deg, #3B82F6, #2563EB)', desc: 'Our AI analyzes your symptoms, medical history, and lab reports to provide accurate preliminary diagnosis. The specially curated questionnaire adapts to your responses for precise results.', features: ['Adaptive AI questionnaire', 'Multi-model fallback', 'Differential diagnosis', 'Confidence scoring'] },
+  { icon: Brain, title: 'AI Health Screening', gradient: 'linear-gradient(135deg, #3B82F6, #2563EB)', desc: 'The AI considers your symptoms, medical history, and optional lab findings, then asks relevant follow-up questions. Results explain possible causes or show insufficient evidence.', features: ['Personalized follow-up questions', 'Medical history considered', 'Possible causes explained', 'Clear uncertainty'] },
   { icon: Microscope, title: 'Lab Report Analysis', gradient: 'linear-gradient(135deg, #8B5CF6, #7C3AED)', desc: 'Upload your lab reports in any format. Our multimodal AI extracts key biomarkers, identifies abnormal values, and correlates them with your symptoms.', features: ['OCR-powered extraction', 'Abnormal value detection', 'Symptom correlation', 'Trend analysis'] },
   { icon: Stethoscope, title: 'Doctor Consultation', gradient: `linear-gradient(135deg, ${C.teal}, ${C.primary})`, desc: 'Based on your AI screening results, we recommend the right specialist and help you find top-rated doctors in your area.', features: ['Specialist matching', 'Location-based search', 'Rating system', 'Appointment booking'] },
-  { icon: FileText, title: 'Clinical Reports', gradient: 'linear-gradient(135deg, #EA580C, #F97316)', desc: "Download comprehensive PDF reports with your complete diagnostic summary, lab correlations, and recommendations — ready to share with your doctor.", features: ['Professional PDF', 'Diagnostic summary', 'Lab correlation', 'Physician sign-off'] },
+  { icon: FileText, title: 'Clinical Reports', gradient: 'linear-gradient(135deg, #EA580C, #F97316)', desc: "Download a report with your assessment, supporting reported facts, limitations, and suggested next steps to discuss with your doctor.", features: ['Professional PDF', 'Simple explanations', 'Supporting facts', 'Uncertainty and next steps'] },
   { icon: Pill, title: 'Precautionary Guidance', gradient: 'linear-gradient(135deg, #16A34A, #22C55E)', desc: 'Evidence-based precautionary measures, lifestyle recommendations, and wellness tips tailored to your specific condition.', features: ['Condition-specific advice', 'Lifestyle modifications', 'Dietary tips', 'Follow-up scheduling'] },
   { icon: Phone, title: 'Emergency Triage', gradient: 'linear-gradient(135deg, #DC2626, #EF4444)', desc: 'Instant identification of critical conditions with automated emergency routing, SOS capabilities, and nearest ER locator.', features: ['Red-flag detection', 'Emergency routing', 'Nearest ER finder', 'SOS alerts'] },
 ];
@@ -80,8 +80,8 @@ export default function Services() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
             {[
-              { icon: Shield, title: 'HIPAA Compliant', desc: 'Enterprise-grade security for your data' },
-              { icon: Activity, title: '97% Accuracy', desc: 'AI trained on extensive medical datasets' },
+              { icon: Shield, title: 'Clear Limitations', desc: 'AI screening requires professional review' },
+              { icon: Activity, title: 'Explainable Results', desc: 'Supporting facts and uncertainties in plain language' },
               { icon: Clock, title: '24/7 Available', desc: 'Access screening services anytime' },
               { icon: Users, title: 'Expert Network', desc: '50+ healthcare professionals' },
             ].map(w => (

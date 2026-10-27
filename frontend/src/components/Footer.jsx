@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer style={{ background: C.primaryDark, color: 'white' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 24px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: 40 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 40 }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
               <div style={{ width: 40, height: 40, background: 'rgba(255,255,255,0.1)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -22,7 +22,7 @@ export default function Footer() {
 
           <div>
             <h4 style={{ fontWeight: 700, marginBottom: 16, color: 'rgba(255,255,255,0.9)' }}>Quick Links</h4>
-            {[['/', 'Home'], ['/about', 'About Us'], ['/services', 'Services'], ['/ai-diagnosis', 'AI Diagnosis'], ['/contact', 'Contact']].map(([to, label]) => (
+            {[['/', 'Home'], ['/about', 'About Us'], ['/services', 'Services'], ['/ai-diagnosis', 'AI Screening'], ['/contact', 'Contact']].map(([to, label]) => (
               <Link key={to} to={to} style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10, transition: 'color 0.2s' }}>{label}</Link>
             ))}
           </div>

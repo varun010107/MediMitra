@@ -1,16 +1,8 @@
 fastapi>=0.115
-fpdf2>=2.8
+reportlab>=4.2
 google-genai>=1.0
-joblib>=1.4
-matplotlib>=3.9
-numpy>=2.0
-pandas>=2.2
 python-dotenv>=1.0
 python-multipart>=0.0.12
-scikit-learn>=1.6
-seaborn>=0.13
 uvicorn[standard]>=0.30
-
-# Development and API integration tests
 httpx>=0.28
 pytest>=8.0

@@ -1,0 +1,9 @@
+# Optional dependencies for archived ML training/evaluation only.
+-r requirements.txt
+fpdf2>=2.8
+joblib>=1.4
+matplotlib>=3.9
+numpy>=2.0
+pandas>=2.2
+scikit-learn>=1.6
+seaborn>=0.13
