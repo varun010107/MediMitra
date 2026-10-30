@@ -1,8 +1,0 @@
-fastapi>=0.115
-reportlab>=4.2
-google-genai>=1.0
-python-dotenv>=1.0
-python-multipart>=0.0.12
-uvicorn[standard]>=0.30
-httpx>=0.28
-pytest>=8.0

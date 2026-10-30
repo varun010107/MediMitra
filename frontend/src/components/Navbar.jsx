@@ -5,12 +5,14 @@ import { Menu, X, Heart, Phone } from 'lucide-react';
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const isActive = (to) => pathname === to || (to !== '/' && pathname.startsWith(to + '/'));
 
   const links = [
     { to: '/', label: 'Home' },
     { to: '/about', label: 'About' },
     { to: '/services', label: 'Services' },
     { to: '/ai-diagnosis', label: 'AI Screening' },
+    { to: '/skin', label: 'Skin Analysis' },
     { to: '/contact', label: 'Contact' },
   ];
 
@@ -41,8 +43,8 @@ export default function Navbar() {
                   fontSize: 14,
                   fontWeight: 600,
                   transition: 'all 0.2s',
-                  background: pathname === l.to ? '#E8F4F8' : 'transparent',
-                  color: pathname === l.to ? '#064E63' : '#4A5568',
+                  background: isActive(l.to) ? '#E8F4F8' : 'transparent',
+                  color: isActive(l.to) ? '#064E63' : '#4A5568',
                 }}
               >
                 {l.label}
@@ -94,8 +96,8 @@ export default function Navbar() {
                 borderRadius: 12,
                 fontSize: 14,
                 fontWeight: 600,
-                background: pathname === l.to ? '#E8F4F8' : 'transparent',
-                color: pathname === l.to ? '#064E63' : '#4A5568',
+                background: isActive(l.to) ? '#E8F4F8' : 'transparent',
+                color: isActive(l.to) ? '#064E63' : '#4A5568',
                 marginBottom: 4,
               }}
             >

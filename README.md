@@ -71,9 +71,12 @@ The six-question minimum is a product choice, not a clinically validated accurac
 - `backend/services/report_service.py`: paginated PDF rendering of the same explained assessment.
 - `frontend/src/pages/AIDiagnosis.jsx`: intake, questions, assessment, and report download.
 - `frontend/src/context/PatientContext.jsx`: patient state in React memory.
+- `frontend/src/modules/skin/`: TrustSkin-AI skin-lesion UI served at `/skin`.
 
-## Retained for future ML work
+## Skin lesion analysis (TrustSkin-AI)
 
-`backend/train_model.py`, `backend/evaluate_accuracy.py`, `backend/demo_predictions.py`, the earlier ML services, `backend/models/`, and datasets are preserved but disconnected from the application. Their older unit tests are under `backend/ml_tests/`; install `backend/requirements-ml.txt` separately to work on those modules. Their saved scores describe a repetitive academic dataset, not clinical performance. Restoring an ML integration requires an explicit new integration and validation effort.
+The same frontend also hosts the TrustSkin-AI HAM10000 skin-lesion research module at `/skin` (`/skin/analyze`, `/skin/research`, `/skin/models`, `/skin/about`). Its code lives in `frontend/src/modules/skin/`; its backend is the separate [TrustSkin-AI](https://github.com/varun010107/TrustSkin-AI) repository. Vite proxies `/api/skin/*` to that API on port 8000 (prefix stripped), while `/api/*` stays on MediMitra's API on port 8001.
 
-`opum_max_ui.py` is a legacy standalone Streamlit implementation and is not part of the current React/FastAPI application. Its extra dependencies are not installed by the default requirements.
+`run_all.sh` starts both APIs and the frontend. Set `TRUSTSKIN_DIR` if TrustSkin-AI is not checked out next to this repository, and `TRUSTSKIN_PYTHON` to the Python inside its virtual environment. TrustSkin-AI needs its trained `results/` and `outputs/` artifacts restored locally; they are not in either repository.
+
+The earlier tabular ML pipeline and the standalone Streamlit prototype were removed; they remain available in git history.

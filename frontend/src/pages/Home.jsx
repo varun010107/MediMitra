@@ -411,6 +411,13 @@ export default function Home() {
           }}>
             Begin Your Health Assessment <ArrowRight size={18} />
           </Link>
+          <Link to="/skin" style={{
+            display: 'inline-flex', alignItems: 'center', gap: 8, marginLeft: 12,
+            background: 'rgba(255,255,255,0.12)', color: 'white', border: '1px solid rgba(255,255,255,0.35)',
+            padding: '16px 32px', borderRadius: 14, fontWeight: 700, fontSize: 15,
+          }}>
+            Try Skin Lesion Analysis <Microscope size={18} />
+          </Link>
         </div>
       </section>
     </div>
