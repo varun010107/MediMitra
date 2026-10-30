@@ -1,4 +1,0 @@
-test,evaluated_rows,accuracy,weighted_precision,weighted_recall,weighted_f1,macro_f1,top_3_accuracy,top_5_accuracy
-random_row_holdout,984,1.0,1.0,1.0,1.0,1.0,1.0,1.0
-unique_pattern_holdout,61,1.0,1.0,1.0,1.0,1.0,1.0,1.0
-unique_pattern_5_fold_cv,304,1.0,1.0,1.0,1.0,1.0,1.0,1.0
