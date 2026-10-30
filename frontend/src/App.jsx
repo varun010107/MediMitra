@@ -7,6 +7,7 @@ import About from './pages/About';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
 import AIDiagnosis from './pages/AIDiagnosis';
+import SkinApp from './modules/skin/SkinApp';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/ai-diagnosis" element={<AIDiagnosis />} />
+              <Route path="/skin/*" element={<SkinApp />} />
             </Routes>
           </main>
           <Footer />

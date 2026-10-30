@@ -22,7 +22,7 @@ export default function Footer() {
 
           <div>
             <h4 style={{ fontWeight: 700, marginBottom: 16, color: 'rgba(255,255,255,0.9)' }}>Quick Links</h4>
-            {[['/', 'Home'], ['/about', 'About Us'], ['/services', 'Services'], ['/ai-diagnosis', 'AI Screening'], ['/contact', 'Contact']].map(([to, label]) => (
+            {[['/', 'Home'], ['/about', 'About Us'], ['/services', 'Services'], ['/ai-diagnosis', 'AI Screening'], ['/skin', 'Skin Analysis'], ['/contact', 'Contact']].map(([to, label]) => (
               <Link key={to} to={to} style={{ display: 'block', fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10, transition: 'color 0.2s' }}>{label}</Link>
             ))}
           </div>
